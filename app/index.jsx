@@ -7,7 +7,7 @@ export default function App() {
     <View className="flex-1 bg-white items-center justify-center">
       <Text className="text-4xl f">Paramax</Text>
       <StatusBar style='auto'/>
-      <Link href={'/profile'} style={{ color: 'blue' }}>Go to profile</Link>
+      <Link href={'/home'} style={{ color: 'blue' }}>Go to home</Link>
     </View>
   );
 }
