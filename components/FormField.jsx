@@ -12,6 +12,7 @@ const FormField = ({
   ...props
 }) => {
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setConfirmPassword] = useState(false);
 
   return (
     <View className={`space-y-2 ${otherStyles}`}>
@@ -32,6 +33,16 @@ const FormField = ({
           <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
             <Image
               source={!showPassword ? icons.eye : icons.eyeHide}
+              className="w-6 h-6"
+              resizeMode="contain"
+            />
+          </TouchableOpacity>
+        )}
+
+        {title === "Confirm Password" && (
+          <TouchableOpacity onPress={() => setConfirmPassword(!showConfirmPassword)}>
+            <Image
+              source={!showConfirmPassword ? icons.eye : icons.eyeHide}
               className="w-6 h-6"
               resizeMode="contain"
             />
