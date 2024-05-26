@@ -1,8 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
 import { Image, Text, Platform, View, ScrollView } from 'react-native';
-import { Link } from 'expo-router'
+import { Redirect, router } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { images } from "../constants";
+import ContinueButton from '../components/CustomButton';
+
 
 export default function App() {
   return (
@@ -35,12 +37,19 @@ export default function App() {
             />
           </View>
 
-        <Text className="text-sm font-pregular text-gray-100 mt-7 text-center">
-          Where Creativity Meets Innovation: Embark on a Journey of Limitless
-          Exploration with Aora
-        </Text>
+          <Text className="text-sm font-pregular text-gray-100 mt-7 text-center">
+            Where Cleannes Meets Innovation: We understand that a clean house  gives us all a wonderful feeling
+          </Text>
+
+          <ContinueButton
+            title="Continue"
+            handlePress={() => router.push("/login")}
+            containerStyles="w-full mt-7"
+          />
         </View>
       </ScrollView>
+
+      <StatusBar backgroundColor="#161622" style="light" />
     </SafeAreaView>
   );
 }
