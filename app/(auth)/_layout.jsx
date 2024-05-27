@@ -1,10 +1,11 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 import { Stack } from 'expo-router'
+import { AuthProvider } from '../../lib/authProvider'
 
 export default function AuthLayout() {
   return (
-   <>
+   <AuthProvider>
     <Stack>
       <Stack.Screen 
         name='signup'
@@ -19,6 +20,6 @@ export default function AuthLayout() {
         ptions={{ headerShown: false }}
       />
     </Stack>
-   </>
+   </AuthProvider>
   )
 }

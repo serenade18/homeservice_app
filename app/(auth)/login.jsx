@@ -1,14 +1,18 @@
-import { View, Text, ScrollView, Image } from 'react-native'
+import { View, Text, ScrollView, Image, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { StatusBar } from 'expo-status-bar'
 import { images } from '../../constants'
 import FormField from '../../components/FormField'
 import CustomButton from '../../components/CustomButton';
-import { Link } from 'expo-router'
+import { Link, router } from 'expo-router'
+import { loadUser, login } from '../../lib/actions'
+import { useAuth } from '../../lib/authProvider'
 
 export default function Login() {
   const [isSubmitting, setSubmitting] = useState(false);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const { setUser } = useAuth();
 
   const [form, setForm] = useState({
     email: "",
@@ -23,14 +27,16 @@ export default function Login() {
     setSubmitting(true);
 
     try {
-      await signIn(form.email, form.password);
-      const result = await getCurrentUser();
-      setUser(result);
-      setIsLogged(true);
+      const result = await login(form.email, form.password);
+      const userDetails = await loadUser(result);
+      setUser(userDetails);
+      setIsLoggingIn(false);
 
-      Alert.alert("Success", "User signed in successfully");
+      Alert.alert("Success", "Signed in successfully");
       router.replace("/home");
+      
     } catch (error) {
+      setIsLoggingIn(false);
       Alert.alert("Error", error.message);
     } finally {
       setSubmitting(false);
