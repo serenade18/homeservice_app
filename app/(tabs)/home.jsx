@@ -1,19 +1,20 @@
-import { View, Text, FlatList, Image } from 'react-native'
-import React from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
-
-import { images } from "../../constants";
+import { View, Text, FlatList, Image } from 'react-native';
+import React from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { StatusBar } from 'expo-status-bar';
+import { images } from '../../constants';
 import SearchInput from '../../components/SearchInput';
-// import Trending from '../../components/Trending';
+import { useAuth } from '../../lib/authProvider'; // Ensure this path is correct
 
 export default function Home() {
-  
+  const { user } = useAuth(); // Access user from the authentication context
+
   return (
-    <SafeAreaView  className="bg-primary h-full">
+    <SafeAreaView className="bg-primary h-full">
       <FlatList
-        data={[{ id : 1}, { id: 2 }, { id: 3 }]}
-        keyExtractor={(item) => item.$id}
-        renderItem={({item}) => (
+        data={[{ id: 1 }, { id: 2 }, { id: 3 }]}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
           <Text className="text-3xl text-white">{item.id}</Text>
         )}
         ListHeaderComponent={() => (
@@ -24,7 +25,7 @@ export default function Home() {
                   Welcome Back
                 </Text>
                 <Text className="text-2xl font-psemibold text-white">
-                  Ahmed Sereta
+                  {user?.name || 'Guest'} 
                 </Text>
               </View>
 
@@ -48,8 +49,8 @@ export default function Home() {
             </View>
           </View>
         )}
-
       />
+      <StatusBar backgroundColor="#161622" style="light" />
     </SafeAreaView>
-  )
+  );
 }
