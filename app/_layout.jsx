@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { SplashScreen, Stack } from 'expo-router';
+import { SplashScreen, Stack, useRouter } from 'expo-router';
 import { useFonts } from 'expo-font';
 import { AuthProvider, useAuth } from '../lib/authProvider';
 
@@ -40,21 +40,29 @@ const RootLayout = () => {
 
 const AppContent = () => {
   const { user, loading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && user) {
+      // Redirect away from auth screens if user is authenticated
+      router.replace('/home');
+    }
+  }, [user, loading]);
 
   if (loading) {
     return null; // Or a loading spinner
   }
 
-  console.log("user", user)
-
   return (
     <>
       {user ? (
+        // Authenticated user routes
         <Stack screenOptions={{ headerShown: false }}>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="search/[query]" options={{ headerShown: false }} />
         </Stack>
       ) : (
+        // Unauthenticated user routes
         <Stack screenOptions={{ headerShown: false }}>
           <Stack.Screen name="index" options={{ headerShown: false }} />
           <Stack.Screen name="(auth)" options={{ headerShown: false }} />
