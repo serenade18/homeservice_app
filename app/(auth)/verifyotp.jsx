@@ -6,20 +6,19 @@ import { images } from '../../constants';
 import FormField from '../../components/FormField';
 import CustomButton from '../../components/CustomButton';
 import { Link, router } from 'expo-router';
-import { loadUser, login } from '../../lib/actions';
+import { verify } from '../../lib/actions';
 import { useAuth } from '../../lib/authProvider';
 
-export default function Login() {
+export default function Verifyotp() {
   const [isSubmitting, setSubmitting] = useState(false);
   const { setUser } = useAuth();
 
   const [form, setForm] = useState({
-    email: '',
-    password: '',
+    otp: '',
   });
 
   const submit = async () => {
-    if (form.email === '' || form.password === '') {
+    if (form.otp === '') {
       Alert.alert('Error', 'Please fill in all fields');
       return;
     }
@@ -27,15 +26,13 @@ export default function Login() {
     setSubmitting(true);
 
     try {
-      const result = await login(form.email, form.password);
-      const userDetails = await loadUser(result.token); // Ensure you pass the correct value here
-      console.log("User details:", userDetails); // Debug userDetails
-      setUser(userDetails);
+      const result = await verify(form.otp);
+      console.log("User details:", result); 
 
-      Alert.alert('Success', 'Signed in successfully');
-      router.replace('/home');
+      Alert.alert('Success', 'Account activated. Please Log in');
+      router.replace('/login');
     } catch (error) {
-      Alert.alert('Error', error.message);
+      Alert.alert('Error', 'Invalid OTP');
     } finally {
       setSubmitting(false);
     }
@@ -45,7 +42,7 @@ export default function Login() {
     <>
       <SafeAreaView className="bg-primary h-full">
         <ScrollView>
-          <View className="w-full flex justify-center min-h-[95vh] px-4 my-6">
+          <View className="w-full flex justify-center min-h-[65vh] px-4 my-6">
             <Image
               source={images.logo}
               resizeMode="contain"
@@ -53,42 +50,23 @@ export default function Login() {
             />
 
             <Text className="text-2xl font-semibold text-white mt-10 font-psemibold">
-              Log in to Paramax
+              Enter 6 Digit Code
             </Text>
 
             <FormField
-              title="Email"
-              otherStyles="mt-7"
-              value={form.email}
-              handleChangeText={(e) => setForm({ ...form, email: e })}
-              keyboardType="email-address"
-            />
-
-            <FormField
-              title="Password"
-              value={form.password}
-              handleChangeText={(e) => setForm({ ...form, password: e })}
+              title="Enter 6 Digit code"
+              value={form.otp}
+              handleChangeText={(e) => setForm({ ...form, otp: e })}
               otherStyles="mt-7"
             />
 
             <CustomButton
-              title="Sign In"
+              title="Submit"
               handlePress={submit}
               containerStyles="mt-7"
               isLoading={isSubmitting}
             />
 
-            <View className="flex justify-center pt-5 flex-row gap-2">
-              <Text className="text-lg text-gray-100 font-pregular">
-                Don't have an account?
-              </Text>
-              <Link
-                href="/signup"
-                className="text-lg font-psemibold text-secondary"
-              >
-                Signup
-              </Link>
-            </View>
           </View>
         </ScrollView>
         <StatusBar backgroundColor="#161622" style="light" />

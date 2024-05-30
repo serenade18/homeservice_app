@@ -1,11 +1,12 @@
-import { View, Text, ScrollView, Image } from 'react-native'
+import { View, Text, ScrollView, Image, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { StatusBar } from 'expo-status-bar'
 import { images } from '../../constants'
 import FormField from '../../components/FormField'
 import CustomButton from '../../components/CustomButton';
-import { Link } from 'expo-router'
+import { Link, router } from 'expo-router'
+import { signup } from '../../lib/actions'
 
 export default function Signup() {
   const [isSubmitting, setSubmitting] = useState(false);
@@ -15,24 +16,21 @@ export default function Signup() {
     phone: "",
     email: "",
     password: "",
-    re_password: "",
   });
 
   const submit = async () => {
-    if (form.email === "" || form.password === "") {
+    if (form.name === "" || form.email === "" || form.phone === "" || form.password === "") {
       Alert.alert("Error", "Please fill in all fields");
     }
 
     setSubmitting(true);
 
     try {
-      await signIn(form.email, form.password);
-      const result = await getCurrentUser();
-      setUser(result);
-      setIsLogged(true);
+      const result = await signup(form.name, form.phone, form.email, form.password);
+      console.log("result:", result);
 
-      Alert.alert("Success", "User signed in successfully");
-      router.replace("/home");
+      Alert.alert("Success", "Account created successfully. Check your email for verification code");
+      router.replace("/verifyotp");
     } catch (error) {
       Alert.alert("Error", error.message);
     } finally {
@@ -81,13 +79,6 @@ export default function Signup() {
               title="Password"
               value={form.password}
               handleChangeText={(e) => setForm({ ...form, password: e })}
-              otherStyles="mt-7"
-            />
-            
-            <FormField
-              title="Confirm Password"
-              value={form.re_password}
-              handleChangeText={(e) => setForm({ ...form, re_password: e })}
               otherStyles="mt-7"
             />
 

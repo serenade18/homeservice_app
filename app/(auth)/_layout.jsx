@@ -5,7 +5,7 @@ import { AuthProvider } from '../../lib/authProvider'
 
 export default function AuthLayout() {
   return (
-   <AuthProvider>
+   <>
     <Stack>
       <Stack.Screen 
         name='signup'
@@ -16,10 +16,14 @@ export default function AuthLayout() {
         options={{ headerShown: false }}
       />
       <Stack.Screen 
+        name='verifyotp'
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen 
         name='resetpassword'
         ptions={{ headerShown: false }}
       />
     </Stack>
-   </AuthProvider>
+   </>
   )
 }
