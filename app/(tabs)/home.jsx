@@ -6,6 +6,7 @@ import { images } from '../../constants';
 import SearchInput from '../../components/SearchInput';
 import { useAuth } from '../../lib/authProvider'; // Ensure this path is correct
 import Trending from '../../components/Trending';
+import Categories from '../../components/Categories';
 
 export default function Home() {
   const { user } = useAuth(); // Access user from the authentication context
@@ -46,12 +47,19 @@ export default function Home() {
 
             <SearchInput />
 
-            <View className="w-full flex-1 pt-5 pb-8">
+            <View className="w-full flex-1 pt-5 pb-5">
               <Text className="text-lg font-pregular text-gray-100 mb-3">
                 Offers for you
               </Text>
 
               <Trending posts={imageData ?? []} />
+            </View>
+            <View className="w-full flex-1 pt-0 pb-8">
+              <Text className="text-lg font-pregular text-gray-100 mb-3">
+                Categories
+              </Text>
+
+              <Categories />
             </View>
           </View>
         )}
