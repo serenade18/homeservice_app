@@ -5,14 +5,20 @@ import { StatusBar } from 'expo-status-bar';
 import { images } from '../../constants';
 import SearchInput from '../../components/SearchInput';
 import { useAuth } from '../../lib/authProvider'; // Ensure this path is correct
+import Trending from '../../components/Trending';
 
 export default function Home() {
   const { user } = useAuth(); // Access user from the authentication context
 
+  const imageData = [
+    { id: 1, src: require('../../assets/images/slider/Slider1.png') },
+    { id: 2, src: require('../../assets/images/slider/Slider2.png') },
+  ];
+
   return (
     <SafeAreaView className="bg-primary h-full">
       <FlatList
-        data={[{ id: 1 }, { id: 2 }, { id: 3 }]}
+        data={imageData}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <Text className="text-3xl text-white">{item.id}</Text>
@@ -45,9 +51,12 @@ export default function Home() {
                 Offers for you
               </Text>
 
-              {/* <Trending posts={latestPosts ?? []} /> */}
+              <Trending posts={imageData ?? []} />
             </View>
           </View>
+        )}
+        ListEmptyComponent={() =>(
+          <Text className="text-3xl text-white">Empty</Text>
         )}
       />
       <StatusBar backgroundColor="#161622" style="light" />

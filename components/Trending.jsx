@@ -1,103 +1,87 @@
-import { useState } from "react";
-import * as Animatable from "react-native-animatable";
-import {
-  FlatList,
-  Image,
-  ImageBackground,
-  TouchableOpacity,
-} from "react-native";
+// import { View, Text, FlatList, Image } from 'react-native'
+// import React from 'react'
 
-import { icons } from "../constants";
+// const Trending = ({ posts }) => {
+//   return (
+//     <FlatList
+//       data={posts}
+//       keyExtractor={(item) => item.id.toString()}
+//       renderItem={({ item }) => (
+//         <View>
+//           <Image 
+//             source={item.src} 
+//             style={{ width: 330, height: 190, marginBottom: 10, borderRadius:20, marginRight: 10 }} 
+//           />
+//         </View>
+//       )}
+//       horizontal
+//     />
+//   )
+// }
 
-const zoomIn = {
-  0: {
-    scale: 0.9,
-  },
-  1: {
-    scale: 1,
-  },
-};
+// export default Trending
 
-const zoomOut = {
-  0: {
-    scale: 1,
-  },
-  1: {
-    scale: 0.9,
-  },
-};
+import { View, Image, FlatList, Dimensions } from 'react-native';
+import React, { useRef, useEffect } from 'react';
 
-const TrendingItem = ({ activeItem, item }) => {
-  const [play, setPlay] = useState(false);
-
-  return (
-    <Animatable.View
-      className="mr-5"
-      animation={activeItem === item.$id ? zoomIn : zoomOut}
-      duration={500}
-    >
-      {play ? (
-        <Video
-          source={{ uri: item.video }}
-          className="w-52 h-72 rounded-[33px] mt-3 bg-white/10"
-          resizeMode={ResizeMode.CONTAIN}
-          useNativeControls
-          shouldPlay
-          onPlaybackStatusUpdate={(status) => {
-            if (status.didJustFinish) {
-              setPlay(false);
-            }
-          }}
-        />
-      ) : (
-        <TouchableOpacity
-          className="relative flex justify-center items-center"
-          activeOpacity={0.7}
-          onPress={() => setPlay(true)}
-        >
-          <ImageBackground
-            source={{
-              uri: item.thumbnail,
-            }}
-            className="w-52 h-72 rounded-[33px] my-5 overflow-hidden shadow-lg shadow-black/40"
-            resizeMode="cover"
-          />
-
-          <Image
-            source={icons.play}
-            className="w-12 h-12 absolute"
-            resizeMode="contain"
-          />
-        </TouchableOpacity>
-      )}
-    </Animatable.View>
-  );
-};
+const windowWidth = Dimensions.get('window').width;
 
 const Trending = ({ posts }) => {
-  const [activeItem, setActiveItem] = useState(posts[0]);
+  const flatListRef = useRef(null);
+  const duplicatedPosts = [...posts, ...posts, ...posts];
 
-  const viewableItemsChanged = ({ viewableItems }) => {
-    if (viewableItems.length > 0) {
-      setActiveItem(viewableItems[0].key);
-    }
+  useEffect(() => {
+    let scrollValue = 0;
+    const scrollInterval = setInterval(() => {
+      if (flatListRef.current) {
+        scrollValue += windowWidth;
+        if (scrollValue >= windowWidth * (posts.length * 2)) {
+          scrollValue = 0;
+          flatListRef.current.scrollToOffset({ offset: scrollValue, animated: false });
+        } else {
+          flatListRef.current.scrollToOffset({ offset: scrollValue, animated: true });
+        }
+      }
+    }, 3000); // Change this value to adjust scroll speed
+
+    return () => clearInterval(scrollInterval);
+  }, []);
+
+  const getItemLayout = (data, index) => ({
+    length: windowWidth,
+    offset: windowWidth * index,
+    index,
+  });
+
+  const onScrollToIndexFailed = (info) => {
+    const wait = new Promise((resolve) => setTimeout(resolve, 500));
+    wait.then(() => {
+      flatListRef.current.scrollToIndex({ index: info.index, animated: true });
+    });
   };
 
   return (
     <FlatList
-      data={posts}
-      horizontal
-      keyExtractor={(item) => item.$id}
+      data={duplicatedPosts}
+      ref={flatListRef}
+      keyExtractor={(item, index) => index.toString()}
       renderItem={({ item }) => (
-        <TrendingItem activeItem={activeItem} item={item} />
+        <View>
+          <Image
+            className="h-[180] w-[310] mr-[15]"
+            source={item.src}
+            style={{  marginBottom: 10, borderRadius: 12, }}
+          />
+        </View>
       )}
-      onViewableItemsChanged={viewableItemsChanged}
-      viewabilityConfig={{
-        itemVisiblePercentThreshold: 70,
-      }}
-      contentOffset={{ x: 170 }}
+      horizontal
+      pagingEnabled={false} // Disable paging for smoother transition
+      showsHorizontalScrollIndicator={false}
+      getItemLayout={getItemLayout}
+      onScrollToIndexFailed={onScrollToIndexFailed}
     />
   );
 };
 
 export default Trending;
+
