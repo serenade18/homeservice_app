@@ -7,6 +7,7 @@ import SearchInput from '../../components/SearchInput';
 import { useAuth } from '../../lib/authProvider'; // Ensure this path is correct
 import Trending from '../../components/Trending';
 import Categories from '../../components/Categories';
+import Services from '../../components/Services';
 
 export default function Home() {
   const { user } = useAuth(); // Access user from the authentication context
@@ -22,7 +23,7 @@ export default function Home() {
         data={imageData}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <Text className="text-3xl text-white">{item.id}</Text>
+          <Text className="text-3xl text-white"></Text>
         )}
         ListHeaderComponent={() => (
           <View className="flex my-6 px-4 space-y-6">
@@ -47,19 +48,37 @@ export default function Home() {
 
             <SearchInput />
 
-            <View className="w-full flex-1 pt-5 pb-5">
+            <View className="w-full flex-1 pt-5 pb-2">
               <Text className="text-lg font-pregular text-gray-100 mb-3">
                 Offers for you
               </Text>
 
               <Trending posts={imageData ?? []} />
             </View>
-            <View className="w-full flex-1 pt-0 pb-8">
-              <Text className="text-lg font-pregular text-gray-100 mb-3">
-                Categories
-              </Text>
 
-              <Categories />
+            <View className="w-full flex-1 pt-0 pb-8">
+              <View className="flex flex-row justify-between items-center mb-3">
+                <Text className="text-lg font-pregular text-gray-100">
+                  Categories
+                </Text>
+                <Text className="text-lg font-psmall text-gray-100">
+                  View all
+                </Text>
+              </View>
+
+              <Categories/>
+            </View>
+            <View className="w-full flex-1 pt-0 pb-8">
+              <View className="flex flex-row justify-between items-center mb-3">
+                <Text className="text-lg font-pregular text-gray-100">
+                  Available Services 
+                </Text>
+                <Text className="text-lg font-psmall text-gray-100">
+                  View all
+                </Text>
+              </View>
+
+              <Services/>
             </View>
           </View>
         )}

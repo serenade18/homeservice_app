@@ -70,7 +70,7 @@ const Trending = ({ posts }) => {
           <Image
             className="h-[180] w-[310] mr-[15]"
             source={item.src}
-            style={{  marginBottom: 10, borderRadius: 12, }}
+            style={{  marginBottom: 0, borderRadius: 12, }}
           />
         </View>
       )}
