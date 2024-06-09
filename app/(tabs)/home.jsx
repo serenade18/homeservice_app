@@ -22,9 +22,7 @@ export default function Home() {
       <FlatList
         data={imageData}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <Text className="text-3xl text-white"></Text>
-        )}
+      
         ListHeaderComponent={() => (
           <View className="flex my-6 px-4 space-y-6">
             <View className="flex justify-between items-start flex-row mb-6">
@@ -68,7 +66,7 @@ export default function Home() {
 
               <Categories/>
             </View>
-            <View className="w-full flex-1 pt-0 pb-8">
+            <View className="w-full flex-1 pt-0">
               <View className="flex flex-row justify-between items-center mb-3">
                 <Text className="text-lg font-pregular text-gray-100">
                   Available Services 
