@@ -35,7 +35,7 @@ export default function Login() {
       Alert.alert('Success', 'Signed in successfully');
       router.replace('/home');
     } catch (error) {
-      Alert.alert('Error', error.message);
+      Alert.alert('Error', "Username and passwords do not match");
     } finally {
       setSubmitting(false);
     }

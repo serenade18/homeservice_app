@@ -42,6 +42,8 @@ const AppContent = () => {
   const { user, loading } = useAuth();
   const router = useRouter();
 
+  console.log("user", user)
+
   useEffect(() => {
     if (!loading && user) {
       // Redirect away from auth screens if user is authenticated

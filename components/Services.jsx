@@ -1,9 +1,10 @@
-import { View, Text } from 'react-native'
+import { View, Text, FlatList } from 'react-native'
 import React, { useEffect, useState } from 'react';
 import { fetchAllServices } from '../lib/actions';
+import ServiceItem from './ServiceItem';
 
 const Services = () => {
-    const [categories, setCategories] = useState([]);
+    const [services, setServices] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -15,7 +16,7 @@ const Services = () => {
         try {
             const response = await fetchAllServices();
             console.log("Services", response)
-            setCategories(response);
+            setServices(response);
         } catch (error) {
             setError(error);
             console.error('Error fetching categories:', error);
@@ -33,9 +34,16 @@ const Services = () => {
     }
 
     return (
-        <View>
-            <Text className="text-white">Services</Text>
-        </View>
+        <FlatList
+            data={services} 
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            renderItem={({item,index}) =>(
+                <View className="flex-1 flex-col items-center mr-[10] ">
+                    <ServiceItem service={item}/>
+                </View>
+            )}
+        />
     )
 }
 
