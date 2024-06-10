@@ -1,11 +1,13 @@
 import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'expo-router';
 import { fetchAllCategories } from '../lib/actions';
 
 const Categories = () => {
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const router = useRouter();
 
     useEffect(() => {
         fetchData();
@@ -37,7 +39,8 @@ const Categories = () => {
             numColumns={4}
             renderItem={({ item, index }) => index<=3&& (
                 <TouchableOpacity 
-                    onPress={()=>console.log("Cancel Pressed")}
+                    // onPress={()=>console.log("Cancel Pressed")}
+                    onPress={() => router.push({ pathname: 'service/servicelist', params: { id: item.id } })}
                     className="flex-1 flex-col items-center p-2"
                 >
                     <View className="bg-black-100 p-[21] rounded-2xl mr-[8]">

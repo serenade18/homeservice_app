@@ -15,7 +15,7 @@ const Services = () => {
     const fetchData = async () => {
         try {
             const response = await fetchAllServices();
-            console.log("Services", response)
+            // console.log("Services", response)
             setServices(response);
         } catch (error) {
             setError(error);
