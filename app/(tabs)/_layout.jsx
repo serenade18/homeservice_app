@@ -88,14 +88,23 @@ const TabsLayout = () => {
           }}
         />
 
-      <Tabs.Screen
-        name="service/servicelist"
-        options={{
-          title: 'Service List',
-          headerShown: false,
-          tabBarButton: () => null, // This hides the tab bar button for this screen
-        }}
-      />
+        <Tabs.Screen
+          name="service/servicelist"
+          options={{
+            title: 'Service List',
+            headerShown: false,
+            tabBarButton: () => null, // This hides the tab bar button for this screen
+          }}
+        />
+
+        <Tabs.Screen
+          name="service/allservices"
+          options={{
+            title: 'Services',
+            headerShown: false,
+            tabBarButton: () => null, // This hides the tab bar button for this screen
+          }}
+        />
       </Tabs>
     </>
   )

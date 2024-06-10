@@ -1,4 +1,4 @@
-import { View, Text, FlatList, Image } from 'react-native';
+import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
@@ -8,9 +8,11 @@ import { useAuth } from '../../lib/authProvider'; // Ensure this path is correct
 import Trending from '../../components/Trending';
 import Categories from '../../components/Categories';
 import Services from '../../components/Services';
+import { useRouter } from 'expo-router';
 
 export default function Home() {
   const { user } = useAuth(); // Access user from the authentication context
+  const router = useRouter();
 
   const imageData = [
     { id: 1, src: require('../../assets/images/slider/Slider1.png') },
@@ -67,13 +69,17 @@ export default function Home() {
               <Categories/>
             </View>
             <View className="w-full flex-1 pt-0">
-              <View className="flex flex-row justify-between items-center mb-3">
+              <View className="flex flex-row justify-between items-center mb-7">
                 <Text className="text-lg font-pregular text-gray-100">
                   Available Services 
                 </Text>
-                <Text className="text-lg font-psmall text-gray-100">
-                  View all
-                </Text>
+                <TouchableOpacity
+                onPress={() => router.push( 'service/allservices')}
+                >
+                  <Text className="text-lg font-psmall text-gray-100">
+                    View all
+                  </Text>
+                </TouchableOpacity>
               </View>
 
               <Services/>
