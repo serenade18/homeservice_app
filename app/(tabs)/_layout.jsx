@@ -98,6 +98,15 @@ const TabsLayout = () => {
         />
 
         <Tabs.Screen
+          name="service/servicedetails"
+          options={{
+            title: 'Service Details',
+            headerShown: false,
+            tabBarButton: () => null, // This hides the tab bar button for this screen
+          }}
+        />
+
+        <Tabs.Screen
           name="service/allservices"
           options={{
             title: 'Services',

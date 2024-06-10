@@ -1,7 +1,7 @@
 import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useLocalSearchParams, router, useNavigation } from 'expo-router';
-import { fetchCategoryDeatials } from '../../../lib/actions';
+import { fetchCategoryDetails } from '../../../lib/actions';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SearchInput from '../../../components/SearchInput';
 import { icons } from '../../../constants';
@@ -24,9 +24,9 @@ const Servicelist = () => {
 
     const fetchData = async () => {
         try {
-            const fetchCategoryDetails = fetchCategoryDeatials(id);
-            const response = await fetchCategoryDetails();
-            console.log('API response:', response);
+            const fetchCategory = fetchCategoryDetails(id);
+            const response = await fetchCategory();
+            // console.log('API response:', response);
     
             if (response.data && response.data.services) {
                 setServices(response.data.services);
