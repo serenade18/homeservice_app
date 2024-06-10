@@ -49,7 +49,7 @@ export default function Home() {
             <SearchInput />
 
             <View className="w-full flex-1 pt-5 pb-2">
-              <Text className="text-lg font-pregular text-gray-100 mb-3">
+              <Text className="text-lg font-pregular text-gray-100 mb-6">
                 Offers for you
               </Text>
 
@@ -61,9 +61,13 @@ export default function Home() {
                 <Text className="text-lg font-pregular text-gray-100">
                   Categories
                 </Text>
-                <Text className="text-lg font-psmall text-gray-100">
-                  View all
-                </Text>
+                <TouchableOpacity
+                  onPress={() => router.push( 'category/allcategories')}
+                >
+                  <Text className="text-lg font-psmall text-gray-100">
+                    View all
+                  </Text>
+                </TouchableOpacity>
               </View>
 
               <Categories/>
@@ -74,7 +78,7 @@ export default function Home() {
                   Available Services 
                 </Text>
                 <TouchableOpacity
-                onPress={() => router.push( 'service/allservices')}
+                  onPress={() => router.push( 'service/allservices')}
                 >
                   <Text className="text-lg font-psmall text-gray-100">
                     View all

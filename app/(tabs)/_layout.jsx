@@ -105,6 +105,15 @@ const TabsLayout = () => {
             tabBarButton: () => null, // This hides the tab bar button for this screen
           }}
         />
+
+        <Tabs.Screen
+          name="category/allcategories"
+          options={{
+            title: 'Categories',
+            headerShown: false,
+            tabBarButton: () => null, // This hides the tab bar button for this screen
+          }}
+        />
       </Tabs>
     </>
   )

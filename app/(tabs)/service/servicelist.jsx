@@ -1,12 +1,13 @@
-import { View, Text, FlatList, Image } from 'react-native';
+import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, router, useNavigation } from 'expo-router';
 import { fetchCategoryDeatials } from '../../../lib/actions';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SearchInput from '../../../components/SearchInput';
-import { images } from '../../../constants';
+import { icons } from '../../../constants';
 import { useAuth } from '../../../lib/authProvider';
 import { BASE_URL } from '../../../lib/constants';
+import ServiceListItem from '../../../components/ServiceListItem';
 
 const Servicelist = () => {
     const params = useLocalSearchParams();
@@ -14,7 +15,8 @@ const Servicelist = () => {
     const [services, setServices] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const { user } = useAuth(); // Access user from the authentication context
+    const [categoryName, setCategoryName] = useState('');
+    const navigation = useNavigation();
 
     useEffect(() => {
         fetchData();
@@ -28,6 +30,7 @@ const Servicelist = () => {
     
             if (response.data && response.data.services) {
                 setServices(response.data.services);
+                setCategoryName(response.data.category_name); // Set the category name
             } else {
                 throw new Error('Invalid response format: Missing services array');
             }
@@ -49,45 +52,31 @@ const Servicelist = () => {
 
     return (
         <SafeAreaView className="bg-primary h-full">
-            <FlatList
-                data={services}
-                renderItem={({ item }) => (
-                    <View className="flex-1 flex-col items-center p-2">
-                        <View className="bg-black-100 p-[21] rounded-2xl mr-[8]">
-                            <Image 
-                                source={{ uri: `${BASE_URL}${item.servie_image}` }} 
-                                style={{ width: 185, height: 120, borderRadius: 10 }}
+           <View className="flex my-6 px-4 space-y-6">
+                <View className="flex justify-between items-start flex-row">
+                    <View className="flex-row items-center mt-1">
+                        <TouchableOpacity
+                            onPress={() => navigation.goBack()}
+                        >
+                            <Image
+                                source={icons.leftArrow}
+                                className="w-13 h-13 mr-5"
+                                resizeMode="contain"
                             />
-                        </View>
-                        <Text className="text-white text-xs mt-5 font-pmedium">{item.service_name}</Text>
+                        </TouchableOpacity>
+                        <Text className="font-pmedium text-2xl text-gray-100">
+                            {categoryName} 
+                        </Text>
                     </View>
-                )}
-                ListHeaderComponent={() => (
-                    <View className="flex my-6 px-4 space-y-6">
-                      <View className="flex justify-between items-start flex-row mb-6">
-                        <View>
-                          <Text className="font-pmedium text-sm text-gray-100">
-                            Welcome Back
-                          </Text>
-                          <Text className="text-2xl font-psemibold text-white">
-                            {user?.name || 'Guest'} 
-                          </Text>
-                        </View>
-          
-                        <View className="mt-1">
-                          <Image
-                            source={images.logoSmall}
-                            className="w-13 h-13"
-                            resizeMode="contain"
-                          />
-                        </View>
-                      </View>
-          
-                      <SearchInput />
-                    </View>
-                  )}
-            />
 
+                </View>
+                <FlatList
+                    data={services}
+                    renderItem={({ item, index }) => (
+                        <ServiceListItem service={item} />
+                    )}
+                />
+           </View>
         </SafeAreaView>
     );
 };

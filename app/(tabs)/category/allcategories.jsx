@@ -1,6 +1,6 @@
 import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { fetchAllServices } from '../../../lib/actions';
+import { fetchAllCategories } from '../../../lib/actions';
 import AllServiceItem from '../../../components/AllServiceItem';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuth } from '../../../lib/authProvider';
@@ -8,8 +8,8 @@ import { icons, images } from '../../../constants';
 import SearchInput from '../../../components/SearchInput';
 import { router, useNavigation } from 'expo-router';
 
-const Allservices = () => {
-    const [services, setServices] = useState([]);
+const AllCategories = () => {
+    const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const navigation = useNavigation();
@@ -20,9 +20,9 @@ const Allservices = () => {
 
     const fetchData = async () => {
         try {
-            const response = await fetchAllServices();
+            const response = await fetchAllCategories();
             // console.log("Services", response)
-            setServices(response);
+            setCategories(response);
         } catch (error) {
             setError(error);
             console.error('Error fetching categories:', error);
@@ -54,20 +54,20 @@ const Allservices = () => {
                             />
                         </TouchableOpacity>
                         <Text className="font-pmedium text-2xl text-gray-100">
-                            All Services 
+                            All Categories 
                         </Text>
                     </View>
 
                 </View>
-                <FlatList
-                    data={services}
+                {/* <FlatList
+                    data={categories}
                     renderItem={({ item, index }) => (
                         <AllServiceItem service={item} />
                     )}
-                />
+                /> */}
            </View>
         </SafeAreaView>
     )
 }
 
-export default Allservices
+export default AllCategories

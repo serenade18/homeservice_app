@@ -10,9 +10,6 @@ import EmptyState from '../../components/EmptyState';
 const Search = () => {
   const { query } = useLocalSearchParams();
   const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [noResults, setNoResults] = useState(false);
 
   useEffect(() => {
     if (query) {
@@ -29,49 +26,12 @@ const Search = () => {
       ];
 
       setResults(combinedResults);
-      setNoResults(combinedResults.length === 0);
     } catch (error) {
       setError(error.message);
     } finally {
       setLoading(false);
     }
   };
-
-  const renderItem = ({ item }) => (
-    <View className="p-4 border-b border-gray-200">
-      <View className="bg-gray-100 p-4 rounded-full mr-4">
-        <Image 
-          source={{ uri: item.category_icon || item.service_icon }} 
-          style={{ width: 40, height: 40 }} 
-        />
-      </View>
-      <Text className="text-white">{item.category_name || item.service_name}</Text>
-    </View>
-  );
-
-  if (loading) {
-    return (
-      <SafeAreaView className="bg-primary h-full flex justify-center items-center">
-        <Text className="text-white">Loading...</Text>
-      </SafeAreaView>
-    );
-  }
-
-  if (error) {
-    return (
-      <SafeAreaView className="bg-primary h-full flex justify-center items-center">
-        <Text className="text-white">Error: {error}</Text>
-      </SafeAreaView>
-    );
-  }
-
-  // if (noResults) {
-  //   return (
-  //     <SafeAreaView className="bg-primary h-full flex justify-center items-center">
-  //       <Text className="text-white">No results found</Text>
-  //     </SafeAreaView>
-  //   );
-  // }
 
   return (
     <SafeAreaView className="bg-primary h-full">
