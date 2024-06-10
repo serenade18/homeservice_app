@@ -3,7 +3,7 @@ import React from 'react'
 import { BASE_URL } from '../lib/constants'
 import { useRouter } from 'expo-router';
 
-const ServiceListItem = ({ service }) => {
+const ServiceListItem = ({ service, booking }) => {
     const router = useRouter();
     return (
         <TouchableOpacity 
@@ -15,9 +15,14 @@ const ServiceListItem = ({ service }) => {
                 style={{ width: 120, height: 120, borderRadius: 10 }}
             />
             <View>
-            <Text className="text-white mt-[5] font-psmall">Paramax Cleaners</Text>
-            <Text className="text-white mt-[5] font-pbold">{service?.service_name}</Text>
-            <Text className="text-white mt-[3] self-start text-xs text-secondary p-[4] bg-primary items-start rounded-lg px-[8]" >{service?.category.category_name}</Text>
+                <Text className="text-white mt-[5] font-psmall">Paramax Cleaners</Text>
+                <Text className="text-white mt-[5] font-pbold">{service?.service_name}</Text>
+                <Text className="text-white mt-[3] self-start text-xs text-secondary p-[4] bg-primary items-start rounded-lg px-[8]" >{service?.category.category_name}</Text>
+                {booking ? (
+                    <View style={{ marginTop: 1 }}>
+                        <Text className=" mt-[3] self-start text-xs text-white p-[4] bg-primary items-start rounded-lg px-[8]" >{booking.status}</Text>
+                    </View>
+                ) : null}
             </View>
         </TouchableOpacity>
     )

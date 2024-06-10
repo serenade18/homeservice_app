@@ -102,7 +102,7 @@ const Servicedetails = () => {
             animationType='slide'
                 visible={showModal}
             >
-                <BookingModal hideModal={() => setShowModal(false)}/>
+                <BookingModal hideModal={() => setShowModal(false)} serviceId={id}/>
             </Modal>
         </SafeAreaView>
     )

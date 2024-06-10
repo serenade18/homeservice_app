@@ -1,15 +1,18 @@
-import { View, Text, TouchableOpacity, Image, FlatList, TextInput, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, Image, FlatList, TextInput, ScrollView, Alert } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { icons } from '../constants';
 import { useNavigation } from 'expo-router';
 import CalendarPicker from 'react-native-calendar-picker';
 import { KeyboardAvoidingView } from 'react-native';
+import { bookNow } from '../lib/actions';
+import moment from 'moment';
 
-const BookingModal = ({ hideModal }) => {
+const BookingModal = ({ hideModal, serviceId }) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const navigation = useNavigation();
   const [timeList, setTimeList] = useState()
   const [selectedTime, setSelectedTime] = useState(null);
+  const [notes, setNotes] = useState('');
 
   const onDateChange = (date) => {
     setSelectedDate(date);
@@ -39,6 +42,26 @@ const BookingModal = ({ hideModal }) => {
     }
     setTimeList(timeList)
   }
+
+  const handleBooking = async () => {
+    if (!selectedDate || !selectedTime) {
+        Alert.alert('Error', 'Please select a date and time.');
+        return;
+    }
+
+    // Format the date to 'YYYY-MM-DD'
+    const formattedDate = moment(selectedDate).format('YYYY-MM-DD');
+
+    try {
+        const response = await bookNow(serviceId, formattedDate, selectedTime, notes); 
+        console.log("response", response)
+        Alert.alert('Success', 'Booking confirmed');
+        hideModal();
+    } catch (error) {
+        Alert.alert('Error', 'Failed to book the service.');
+        console.error('Booking error:', error.message);
+    }
+  };
 
   return (
     <ScrollView>
@@ -116,11 +139,16 @@ const BookingModal = ({ hideModal }) => {
                     placeholderTextColor="#888"
                     numberOfLines={6}
                     multiline={true}
+                    value={notes}
+                    onChangeText={setNotes}
                     style={{ textAlignVertical: 'top', padding: 10 }}
                 />
             </View>
             <View className="p-4">
-                <TouchableOpacity className="w-full bg-secondary rounded-2xl border-1 border-white p-4 items-center">
+                <TouchableOpacity 
+                    onPress={handleBooking}
+                    className="w-full bg-secondary rounded-2xl border-1 border-white p-4 items-center"
+                >
                     <Text className=" text-white font-pmedium">Confirm & Book</Text>
                 </TouchableOpacity>
             </View>
