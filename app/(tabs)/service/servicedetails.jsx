@@ -1,9 +1,10 @@
-import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, Image, TouchableOpacity, ScrollView, Modal } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useLocalSearchParams, useNavigation } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { fetchServiceDetails } from '../../../lib/actions';
 import { icons } from '../../../constants';
+import BookingModal from '../../../components/BookingModal';
 
 const MAX_LINES = 3;
 
@@ -15,6 +16,7 @@ const Servicedetails = () => {
     const [error, setError] = useState(null);
     const [isExpanded, setIsExpanded] = useState(false);
     const navigation = useNavigation();
+    const [showModal, setShowModal] = useState(false)
 
     useEffect(() => {
         fetchData();
@@ -89,10 +91,19 @@ const Servicedetails = () => {
                 <TouchableOpacity className="w-48 bg-black-200 rounded-2xl border-2 border-secondary p-4 items-center">
                     <Text className="text-secondary font-pmedium text-sm">Message</Text>
                 </TouchableOpacity>
-                <TouchableOpacity className="w-48 bg-secondary rounded-2xl border-1 border-white p-4 items-center">
+                <TouchableOpacity 
+                    onPress={()=> setShowModal(true)}
+                    className="w-48 bg-secondary rounded-2xl border-1 border-white p-4 items-center"
+                >
                     <Text className="text-white font-pmedium text-xl">Book</Text>
                 </TouchableOpacity>
             </View>
+            <Modal
+            animationType='slide'
+                visible={showModal}
+            >
+                <BookingModal hideModal={() => setShowModal(false)}/>
+            </Modal>
         </SafeAreaView>
     )
 }
