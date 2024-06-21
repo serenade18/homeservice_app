@@ -14,13 +14,18 @@ export default function Bookmark() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-      fetchData();
+    fetchData(); // Initial fetch
+    const interval = setInterval(() => {
+      fetchData(); // Fetch every 15 seconds
+    }, 5000);
+
+    return () => clearInterval(interval); // Cleanup
   }, []);
 
   const fetchData = async () => {
       try {
           const response = await fetchAllBookings();
-          console.log("Bookings", response)
+          // console.log("Bookings", response)
           setBookings(response);
       } catch (error) {
           setError(error);
