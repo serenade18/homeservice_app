@@ -8,7 +8,7 @@ const ServiceListItem = ({ service, booking }) => {
     return (
         <TouchableOpacity 
             onPress={() => router.push({ pathname: 'service/servicedetails', params: { id: service.id } })}
-            className="bg-black-200 flex flex-row gap-2 rounded-2xl p-[10] mb-[15]"
+            className="bg-black-200 flex flex-row gap-2 rounded-2xl p-[10] mb-5"
         >
             <Image 
                 source={{ uri:`${BASE_URL}${service.servie_image}` }}

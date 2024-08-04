@@ -6,6 +6,7 @@ import { useLocalSearchParams, useNavigation } from 'expo-router';
 import { fetchAllBookings } from '../../lib/actions';
 import { FlatList } from 'react-native';
 import ServiceListItem from '../../components/ServiceListItem';
+import { ScrollView } from 'react-native';
 
 export default function Bookmark() {
   const navigation = useNavigation();
@@ -15,17 +16,12 @@ export default function Bookmark() {
 
   useEffect(() => {
     fetchData(); // Initial fetch
-    const interval = setInterval(() => {
-      fetchData(); // Fetch every 15 seconds
-    }, 5000);
-
-    return () => clearInterval(interval); // Cleanup
   }, []);
 
   const fetchData = async () => {
       try {
           const response = await fetchAllBookings();
-          // console.log("Bookings", response)
+          console.log("Bookings", response)
           setBookings(response);
       } catch (error) {
           setError(error);
@@ -45,7 +41,6 @@ export default function Bookmark() {
 
   return (
     <SafeAreaView className="bg-primary h-full">
-      <>
       <View className="flex justify-between items-start flex-row">
         <TouchableOpacity
           className="flex-row items-center mt-1 p-4"
@@ -61,9 +56,12 @@ export default function Bookmark() {
             </Text>
         </TouchableOpacity>
       </View>
-      <View className="flex my-6 px-4 space-y-6">
+      <>
+      <View className="flex my-4 px-4 mt-3">
         <FlatList
           data={bookings}
+          onRefresh={()=>fetchData()}
+          refreshing={loading}
           renderItem={({ item, index }) => (
             <ServiceListItem 
               service={item?.service}
